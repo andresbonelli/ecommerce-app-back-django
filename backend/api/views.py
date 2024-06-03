@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, FileResponse
 from django.urls import reverse
 from .models import Image, Producto
@@ -40,6 +41,7 @@ def get_product_image(request, image_id):
     return FileResponse(open(image_path, 'rb'), content_type=content_type)
 
 @csrf_exempt
+@require_http_methods(["POST", "OPTIONS"])
 def update_stock(request):
     if request.method.upper() == 'POST':
         try:
