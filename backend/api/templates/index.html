@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toco Backend</title>
+  </head>
+  <body>
+    <h1>Hola</h1>
+    <div class="container">
+      {% for pic in pics %}
+      <img
+        src="{{ pic.image.url }}"
+        alt="{{ pic.caption }}"
+        style="max-width: 300px"
+      />
+      {% endfor %}
+    </div>
+  </body>
+</html>
