@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, FileResponse
 from django.urls import reverse
+from django.conf import settings
 from .models import Image, Producto
 import json
 import mimetypes
@@ -22,13 +23,16 @@ def product_details(request, id):
         'name': producto.name,
         'description': producto.description,
         'storage': producto.storage,
-        'carbs': str(producto.carbs) if producto.carbs is not None else None,
-        'fat': str(producto.fat) if producto.fat is not None else None,
-        'protein': str(producto.protein) if producto.protein is not None else None,
-        'salt': str(producto.salt) if producto.salt is not None else None,
-        'price': str(producto.price) if producto.price is not None else None,
+        'carbs': str(producto.carbs) if producto.carbs else None,
+        'fat': str(producto.fat) if producto.fat else None,
+        'protein': str(producto.protein) if producto.protein else None,
+        'salt': str(producto.salt) if producto.salt else None,
+        'price': str(producto.price) if producto.price else None,
         'stock': producto.stock,
-        'image_url': request.build_absolute_uri(reverse('get_product_image', args=[producto.image.id])) if producto.image else None,
+        'image_url': request.build_absolute_uri(
+            reverse('get_product_image', args=[producto.image.id])
+            ) if producto.image else 
+            request.build_absolute_uri(settings.MEDIA_URL + 'img/24/not-found.jpg')
     }
     return JsonResponse(producto_dict)
     
