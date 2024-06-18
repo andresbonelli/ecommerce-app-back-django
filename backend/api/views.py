@@ -29,6 +29,7 @@ def product_details(request, id):
         'salt': str(producto.salt) if producto.salt else None,
         'price': str(producto.price) if producto.price else None,
         'stock': producto.stock,
+        'image_id': producto.image_id if producto.image_id else None,
         'image_url': request.build_absolute_uri(
             reverse('get_product_image', args=[producto.image.id])
             ) if producto.image else 
