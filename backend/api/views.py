@@ -1,17 +1,43 @@
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.models import User
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, FileResponse
 from django.urls import reverse
 from django.conf import settings
 from .models import Image, Producto
+from .serializers import UserSerializer, ProductSerializer
 import json
 import mimetypes
 
+# Admin views
 def index(request):
     pics = Image.objects.all()
     return render(request,'index.html',{'pics': pics})
 
+class ProductListCreate(generics.ListCreateAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
+
+    queryset = Producto.objects.all()
+
+    def perform_create(self, serializer):
+        if serializer.is_valid:
+            serializer.save()
+        else:
+            print(f"[ERROR] - {serializer.errors}")
+
+class ProductDelete(generics.DestroyAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
+    
+    queryset = Producto.objects.all()
+
+
+
+# User views 
 def products(response):
     products = Producto.objects.all().values()
     return JsonResponse(list(products), safe=False)
@@ -59,3 +85,9 @@ def update_stock(request):
         except Exception as e:
             return JsonResponse({'error': f'Error updating stock: {str(e)}'}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+class CreateUserView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
