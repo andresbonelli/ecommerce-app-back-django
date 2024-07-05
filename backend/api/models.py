@@ -9,8 +9,8 @@ class Image(models.Model):
 
 class Producto(models.Model):
     name = models.CharField(max_length=50, null=False)
-    description = models.CharField(max_length=100, null=False, blank=True)
-    storage = models.CharField(max_length=100, null=False, blank=True)
+    description = models.CharField(max_length=100, null=True, blank=True)
+    storage = models.CharField(max_length=100, null=True, blank=True)
     carbs = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True, validators=[MinValueValidator(0)])
     fat = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True, validators=[MinValueValidator(0)])
     protein = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True, validators=[MinValueValidator(0)])

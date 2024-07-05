@@ -15,4 +15,5 @@ class UserSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Producto
-        fields = ["name", "description", "storage", "carbs", "fat", "protein", "salt", "price", "stock", "image"]
+        # remove not used fields???
+        fields = ('__all__')

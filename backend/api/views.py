@@ -20,21 +20,19 @@ def index(request):
 class ProductListCreate(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
-
     queryset = Producto.objects.all()
-
-    def perform_create(self, serializer):
-        if serializer.is_valid:
-            serializer.save()
-        else:
-            print(f"[ERROR] - {serializer.errors}")
+    
+class ProductUpdate(generics.RetrieveUpdateAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Producto.objects.all()
+    lookup_field = 'id'
 
 class ProductDelete(generics.DestroyAPIView):
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
     
     queryset = Producto.objects.all()
-
 
 
 # User views 
@@ -66,8 +64,6 @@ def product_details(request, id):
 def get_product_image(request, image_id):
     image = get_object_or_404(Image, id=image_id)
     image_path = image.image.path
-    with open(image_path, 'rb') as f:
-        image_data = f.read()
     content_type, _ = mimetypes.guess_type(image_path)
     return FileResponse(open(image_path, 'rb'), content_type=content_type)
 
@@ -86,7 +82,7 @@ def update_stock(request):
             return JsonResponse({'error': f'Error updating stock: {str(e)}'}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-
+# CREATE Admin user with staff_status = False 
 class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
