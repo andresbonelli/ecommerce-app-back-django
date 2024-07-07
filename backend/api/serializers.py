@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Producto
+from .models import Producto, Image
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,7 +13,14 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 class ProductSerializer(serializers.ModelSerializer):
+    image = serializers.PrimaryKeyRelatedField(queryset=Image.objects.all())
     class Meta:
         model = Producto
         # remove not used fields???
         fields = ('__all__')
+        
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = '__all__'
+        

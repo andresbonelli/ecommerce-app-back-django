@@ -8,7 +8,7 @@ from django.http import JsonResponse, FileResponse
 from django.urls import reverse
 from django.conf import settings
 from .models import Image, Producto
-from .serializers import UserSerializer, ProductSerializer
+from .serializers import UserSerializer, ProductSerializer, ImageSerializer
 import json
 import mimetypes
 
@@ -22,6 +22,13 @@ class ProductListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = Producto.objects.all()
     
+    def perform_create(self, serializer):
+        try:
+            serializer.save()
+        except ValidationError as e:
+            print(f"Validation Error: {e}")
+            raise e
+    
 class ProductUpdate(generics.RetrieveUpdateAPIView):
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
@@ -33,6 +40,11 @@ class ProductDelete(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
     
     queryset = Producto.objects.all()
+    
+class ImageListCreate(generics.ListCreateAPIView):
+    serializer_class = ImageSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Image.objects.all()
 
 
 # User views 
