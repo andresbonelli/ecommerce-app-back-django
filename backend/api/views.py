@@ -45,6 +45,12 @@ class ImageListCreate(generics.ListCreateAPIView):
     serializer_class = ImageSerializer
     permission_classes = [IsAuthenticated]
     queryset = Image.objects.all()
+    def perform_create(self, serializer):
+        try:
+            serializer.save()
+        except ValidationError as e:
+            print(f"Validation Error: {e}")
+            raise e
 
 
 # User views 
