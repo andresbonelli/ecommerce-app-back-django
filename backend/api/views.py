@@ -92,7 +92,10 @@ def update_stock(request):
         try:
             data = json.loads(request.body)
             for item in data['cart']:
+                print(item)
                 product = Producto.objects.get(id=item['id'])
+                if item['quantity'] > product.stock:
+                    return JsonResponse({'error': f'Error updating stock: "{product.name}" available stock has been surpassed'}, status=400)
                 product.stock -= item['quantity']
                 product.save()
             return JsonResponse({'message': 'Stock updated successfully'}, status=200)
