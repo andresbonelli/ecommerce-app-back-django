@@ -18,6 +18,9 @@ def index(request):
     return render(request,'index.html',{'pics': pics})
 
 class ProductListCreate(generics.ListCreateAPIView):
+    """
+    List of products.
+    """
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
     queryset = Producto.objects.all()
@@ -42,6 +45,9 @@ class ProductDelete(generics.DestroyAPIView):
     queryset = Producto.objects.all()
     
 class ImageListCreate(generics.ListCreateAPIView):
+    """
+    Product image thumbnail.
+    """
     serializer_class = ImageSerializer
     permission_classes = [IsAuthenticated]
     queryset = Image.objects.all()
@@ -105,6 +111,10 @@ def update_stock(request):
 
 # CREATE Admin user with staff_status = False 
 class CreateUserView(generics.CreateAPIView):
+    """
+    Creates a new django admin user with staff_status = False
+    Intended for testing purposes only. No permission is required 
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]

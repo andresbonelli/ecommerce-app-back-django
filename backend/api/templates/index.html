@@ -7,16 +7,5 @@
   </head>
   <body>
     <running class="">Backend running...</running>
-    {% if pics %}
-    <div class="container" style="margin-top: 50px">
-      <h3>Loaded images:</h3>
-      {% for pic in pics %}
-      <img
-        src="{{ pic.image.url }}"
-        alt="{{ pic.caption }}"
-        style="max-width: 30px"
-      />
-      {% endfor %} {% endif %}
-    </div>
   </body>
 </html>
