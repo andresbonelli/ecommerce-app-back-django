@@ -1,3 +1,5 @@
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Producto, Image
@@ -23,4 +25,15 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = '__all__'
+
+# Adding custom token fields.        
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user: User):
+        token = super().get_token(user)
+
+        token['is_staff'] = user.is_staff
+        token['is_superuser'] = user.is_superuser
+
+        return token
         
