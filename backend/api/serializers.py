@@ -5,7 +5,7 @@ from .models import Producto, Image
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "password"]
+        fields = ["id", "username", "password", "is_staff"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
